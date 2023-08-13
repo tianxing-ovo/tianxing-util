@@ -4,6 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import list.ListUtil;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -13,14 +16,18 @@ import java.util.Map;
 /**
  * jwt工具类
  */
+@Component
+@Data
+@ConfigurationProperties(prefix = "custom")
 public class JwtUtil {
 
-    private static final String secret = "my_secret"; //密钥
+
+    private String secret = "secret888"; //密钥
 
     /**
      * 生成jwtToken
      */
-    public static String createToken(String userInfo, List<String> authList) {
+    public String createToken(String userInfo, List<String> authList) {
         Date IssueDate = new Date(); //发行时间
         Date expireDate = new Date(IssueDate.getTime() + 1000 * 60 * 60 * 2); //到期时间
         //头部
@@ -40,7 +47,7 @@ public class JwtUtil {
     /**
      * 验证token
      */
-    public static boolean verifyToken(String token) {
+    public boolean verifyToken(String token) {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
@@ -52,7 +59,7 @@ public class JwtUtil {
     /**
      * 从jwtToken中获取用户信息
      */
-    public static String getUserInfo(String token) {
+    public String getUserInfo(String token) {
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(secret)
@@ -67,7 +74,7 @@ public class JwtUtil {
     /**
      * 从jwtToken中获取权限列表
      */
-    public static List<String> getAuthList(String token) {
+    public List<String> getAuthList(String token) {
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(secret)
