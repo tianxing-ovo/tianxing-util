@@ -14,7 +14,7 @@ import java.util.Map;
 public class R {
     private Integer code; //状态码
     private String msg; //消息
-    private Map<String, Object> dataMap = new HashMap<>(); //存放数据
+    private Map<String, Object> data; //存放数据
 
     public R(String msg) {
         this.msg = msg;
@@ -35,13 +35,15 @@ public class R {
     /**
      * 成功
      */
-    public static R ok(String msg) {
-        return new R(200, msg);
+    public static R ok(String msg, Map<String, Object> data) {
+        return new R(200, msg, data);
     }
 
-    public R put(String key, Object value) {
-        dataMap.put(key, value);
-        return this;
+    /**
+     * 成功
+     */
+    public static R ok(String msg) {
+        return new R(200, msg);
     }
 
     /**
@@ -49,5 +51,21 @@ public class R {
      */
     public static R error(Integer code, String msg) {
         return new R(code, msg);
+    }
+
+    /**
+     * 失败
+     */
+    public static R error(Integer code, String msg, Map<String, Object> data) {
+        return new R(code, msg, data);
+    }
+
+    /**
+     * 存放数据
+     */
+    public R put(String key, Object value) {
+        data = new HashMap<>();
+        data.put(key, value);
+        return this;
     }
 }
