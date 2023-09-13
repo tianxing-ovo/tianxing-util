@@ -11,8 +11,8 @@ public class MapUtil {
      * map转object
      */
     @SneakyThrows
-    public static void mapToObject(Map<String, Object> map, Class<?> clazz) {
-        Object obj = clazz.newInstance();
+    public static <T> T mapToObject(Map<String, Object> map, Class<T> clazz) {
+        T t = clazz.newInstance();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
@@ -24,9 +24,10 @@ public class MapUtil {
                 } else {
                     method = clazz.getMethod("set" + key, value.getClass());
                 }
-                method.invoke(obj, value);
+                method.invoke(t, value);
             }
         }
+        return t;
     }
 }
 
