@@ -1,4 +1,4 @@
-package redisson;
+package io.github.tianxingovo.redisson;
 
 import lombok.SneakyThrows;
 import org.redisson.api.RLock;

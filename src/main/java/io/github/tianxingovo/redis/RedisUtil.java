@@ -1,4 +1,4 @@
-package redis;
+package io.github.tianxingovo.redis;
 
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;

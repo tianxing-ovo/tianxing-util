@@ -1,4 +1,4 @@
-package list;
+package io.github.tianxingovo.list;
 
 import java.util.List;
 import java.util.stream.Collectors;

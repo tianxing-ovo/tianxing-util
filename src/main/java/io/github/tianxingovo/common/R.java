@@ -1,4 +1,4 @@
-package common;
+package io.github.tianxingovo.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

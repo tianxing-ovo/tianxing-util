@@ -1,4 +1,4 @@
-package enums;
+package io.github.tianxingovo.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

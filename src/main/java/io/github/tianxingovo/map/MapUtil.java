@@ -1,4 +1,4 @@
-package map;
+package io.github.tianxingovo.map;
 
 import lombok.SneakyThrows;
 

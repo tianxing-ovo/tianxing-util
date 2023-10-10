@@ -1,4 +1,4 @@
-package exceptions;
+package io.github.tianxingovo.exceptions;
 
 import lombok.Getter;
 

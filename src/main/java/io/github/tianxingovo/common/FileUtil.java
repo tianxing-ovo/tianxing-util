@@ -1,4 +1,4 @@
-package common;
+package io.github.tianxingovo.common;
 
 import lombok.extern.slf4j.Slf4j;
 
