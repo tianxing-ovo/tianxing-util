@@ -13,10 +13,6 @@ import static com.aliyun.teautil.Common.assertAsString;
  * 阿里云短信验证码工具类
  */
 public class SMSUtil {
-    public static void main(String[] args) {
-        sendMessage("tanhua交友", "SMS_276055333", "17107815436");
-    }
-
     /**
      * 发送短信验证码
      */
