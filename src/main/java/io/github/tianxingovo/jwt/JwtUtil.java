@@ -22,25 +22,26 @@ import java.util.Map;
 public class JwtUtil {
 
 
-    private String secret = "secret888"; //密钥
+    private String secret = "secret888"; // 密钥
 
     /**
      * 生成jwtToken
+     * 签名算法.数据.签名
      */
     public String createToken(String userInfo, List<String> authList) {
-        Date IssueDate = new Date(); //发行时间
-        Date expireDate = new Date(IssueDate.getTime() + 1000 * 60 * 60 * 2); //到期时间
+        Date IssueDate = new Date(); // 发行时间
+        Date expireDate = new Date(IssueDate.getTime() + 1000 * 60 * 60 * 2); // 到期时间
         //头部
         Map<String, Object> claims = new HashMap<>();
         claims.put("alg", "HS256");
         claims.put("typ", "JWT");
         return Jwts.builder().addClaims(claims)
-                .setIssuer("admin") //设置签发人
-                .setIssuedAt(IssueDate) //发行时间
-                .setExpiration(expireDate) //到期时间
-                .claim("userInfo", userInfo) //用户信息
-                .claim("authList", authList) //权限列表
-                .signWith(SignatureAlgorithm.HS256, secret) //使用HS256进行签名,使用secret作为密钥
+                .setIssuer("admin")  // 设置签发人
+                .setIssuedAt(IssueDate) // 发行时间
+                .setExpiration(expireDate) // 到期时间
+                .claim("userInfo", userInfo) // 用户信息
+                .claim("authList", authList) // 权限列表
+                .signWith(SignatureAlgorithm.HS256, secret) // 使用HS256进行签名,使用secret作为密钥
                 .compact();
     }
 
