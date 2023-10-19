@@ -1,11 +1,13 @@
 package io.github.tianxingovo.common;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -107,5 +109,14 @@ public class FileUtil {
         } catch (IOException e) {
             log.error("文件写入失败,失败信息:{}", e.getMessage());
         }
+    }
+
+    /**
+     * 将文件内容转换为Base64字符串
+     */
+    @SneakyThrows
+    public static String Base64String(String file) {
+        byte[] bytes = Files.readAllBytes(Paths.get(file));
+        return Base64.getEncoder().encodeToString(bytes);
     }
 }
