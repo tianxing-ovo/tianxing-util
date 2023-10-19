@@ -12,7 +12,7 @@ public class ObjectUtil {
     /**
      * 获取对象属性,收集到List中
      */
-    public <T> List<Object> getProperty(Class<T> clazz, T t, List<String> fieldList) {
+    public static <T> List<Object> getProperty(Class<T> clazz, T t, List<String> fieldList) {
         List<Field> list = Arrays.asList(clazz.getDeclaredFields());
         // 获取指定属性
         if (fieldList != null) {
@@ -32,7 +32,7 @@ public class ObjectUtil {
     /**
      * 获取对象的所有属性,收集到List中
      */
-    public <T> List<Object> getProperty(Class<T> clazz, T t) {
+    public static <T> List<Object> getProperty(Class<T> clazz, T t) {
         return getProperty(clazz, t, null);
     }
 }

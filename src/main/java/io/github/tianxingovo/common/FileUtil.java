@@ -84,7 +84,7 @@ public class FileUtil {
      * 以字符为单位写入
      */
     public static void write(String file, String s) {
-        //true:以追加的方式写入,默认会覆盖
+        // true:以追加的方式写入,默认会覆盖
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
             writer.write(s);
             writer.flush();
