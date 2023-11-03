@@ -22,7 +22,7 @@ public class FileUtil {
     public static String readByte(String file) {
         StringBuilder sb = new StringBuilder();
         try (FileInputStream is = new FileInputStream(file)) {
-            byte[] bytes = new byte[1024]; //每次读取1024个字节
+            byte[] bytes = new byte[1024]; // 每次读取1024个字节
             int len;
             while ((len = is.read(bytes)) != -1) {
                 sb.append(new String(bytes, 0, len));
@@ -69,7 +69,7 @@ public class FileUtil {
      * 以字节为单位写入
      */
     public static void writeByte(String file, String s) {
-        //true:以追加的方式写入,默认会覆盖
+        // true:以追加的方式写入,默认会覆盖
         try (FileOutputStream os = new FileOutputStream(file, true)) {
             byte[] bytes = s.getBytes();
             os.write(bytes);
@@ -103,7 +103,7 @@ public class FileUtil {
      */
     public static void writeNIO(String file, String s) {
         try {
-            //APPEND:以追加的方式写入,默认会覆盖
+            // APPEND:以追加的方式写入,默认会覆盖
             Files.write(Paths.get(file), s.getBytes(), StandardOpenOption.APPEND);
             log.info("写入成功");
         } catch (IOException e) {
