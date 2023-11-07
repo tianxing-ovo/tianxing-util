@@ -1,0 +1,33 @@
+package io.github.tianxingovo.nio;
+
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+
+@SuppressWarnings("ResultOfMethodCallIgnored")
+public class FileChannelUtil {
+
+    public static String read(String name) throws IOException {
+        RandomAccessFile file = new RandomAccessFile(name, "rw");
+        FileChannel fileChannel = file.getChannel();
+        ByteBuffer buffer = ByteBuffer.allocate(1024);
+        int len;
+        StringBuilder sb = new StringBuilder();
+        while ((len = fileChannel.read(buffer)) != -1) {
+            // 写模式 -> 读模式
+            buffer.flip();
+            sb.append(new String(buffer.array(), 0, len));
+            buffer.clear();
+        }
+        file.close();
+        return sb.toString();
+    }
+
+    public static void write(String name, String data) throws IOException {
+        RandomAccessFile file = new RandomAccessFile(name, "rw");
+        FileChannel fileChannel = file.getChannel();
+        fileChannel.write(ByteBuffer.wrap(data.getBytes()));
+        file.close();
+    }
+}
