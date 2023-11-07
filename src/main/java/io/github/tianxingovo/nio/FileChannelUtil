@@ -30,4 +30,24 @@ public class FileChannelUtil {
         fileChannel.write(ByteBuffer.wrap(data.getBytes()));
         file.close();
     }
+
+    public static void transferTo(String srcName, String destName) throws IOException {
+        RandomAccessFile srcFile = new RandomAccessFile(srcName, mode);
+        RandomAccessFile destFile = new RandomAccessFile(destName, mode);
+        FileChannel srcFileChannel = srcFile.getChannel();
+        FileChannel destFileChannel = destFile.getChannel();
+        srcFileChannel.transferTo(0, srcFileChannel.size(), destFileChannel);
+        srcFile.close();
+        destFile.close();
+    }
+
+    public static void transferFrom(String srcName, String destName) throws IOException {
+        RandomAccessFile srcFile = new RandomAccessFile(srcName, mode);
+        RandomAccessFile destFile = new RandomAccessFile(destName, mode);
+        FileChannel srcFileChannel = srcFile.getChannel();
+        FileChannel destFileChannel = destFile.getChannel();
+        destFileChannel.transferFrom(srcFileChannel, 0, srcFileChannel.size());
+        srcFile.close();
+        destFile.close();
+    }
 }
