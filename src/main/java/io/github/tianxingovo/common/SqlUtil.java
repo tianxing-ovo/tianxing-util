@@ -14,13 +14,13 @@ public class SqlUtil {
      * @param updateField 需要更新的字段
      * @param field       case的字段
      */
-    public static StringJoiner batchUpdateSql(String tableName, String updateField, String field, Map<Integer, String> map) {
+    public static String batchUpdateSql(String tableName, String updateField, String field, Map<Integer, String> map) {
         String prefix = String.format("update %s set %s = case %s ", tableName, updateField, field);
         StringJoiner joiner = new StringJoiner(" ", prefix, " end");
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
             String s = String.format("when %d then %s", entry.getKey(), entry.getValue());
             joiner.add(s);
         }
-        return joiner;
+        return joiner.toString();
     }
 }
