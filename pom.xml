@@ -6,7 +6,7 @@
 
     <groupId>io.github.tianxing-ovo</groupId>
     <artifactId>tianxing-util</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <!--开源协议-->
     <licenses>
         <license>
