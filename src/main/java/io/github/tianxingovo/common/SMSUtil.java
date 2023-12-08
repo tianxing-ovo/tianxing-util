@@ -17,7 +17,7 @@ public class SMSUtil {
     /**
      * 发送短信验证码
      */
-    public static void sendMessage(String signName, String templateCode, String phoneNumbers, int code) {
+    public static void sendMessage(String signName, String templateCode, String phoneNumbers, String code) {
         // 从环境变量中读取ak和sk
         String accessKeyId = System.getenv("ALIBABA_CLOUD_ACCESS_KEY_ID");
         String accessKeySecret = System.getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET");
