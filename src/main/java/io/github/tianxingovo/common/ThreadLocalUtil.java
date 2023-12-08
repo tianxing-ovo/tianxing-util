@@ -3,20 +3,19 @@ package io.github.tianxingovo.common;
 /**
  * 多线程环境中保存和获取用户相关的信息
  */
-@SuppressWarnings("unchecked")
-public class ThreadLocalUtil {
+public class ThreadLocalUtil<T> {
 
-    private static final ThreadLocal<Object> threadLocal = new ThreadLocal<>();
+    private final ThreadLocal<T> threadLocal = new ThreadLocal<>();
 
-    public static <T> void set(T t) {
+    public void set(T t) {
         threadLocal.set(t);
     }
 
-    public static <T> T get() {
-        return (T) threadLocal.get();
+    public T get() {
+        return threadLocal.get();
     }
 
-    public static void remove() {
+    public void remove() {
         threadLocal.remove();
     }
 }
