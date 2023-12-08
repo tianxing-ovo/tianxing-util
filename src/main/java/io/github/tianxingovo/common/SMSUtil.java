@@ -13,10 +13,11 @@ import static com.aliyun.teautil.Common.assertAsString;
  * 阿里云短信验证码工具类
  */
 public class SMSUtil {
+
     /**
      * 发送短信验证码
      */
-    public static void sendMessage(String signName, String templateCode, String phoneNumbers) {
+    public static void sendMessage(String signName, String templateCode, String phoneNumbers, int code) {
         // 从环境变量中读取ak和sk
         String accessKeyId = System.getenv("ALIBABA_CLOUD_ACCESS_KEY_ID");
         String accessKeySecret = System.getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET");
@@ -25,7 +26,7 @@ public class SMSUtil {
                 .setSignName(signName)
                 .setTemplateCode(templateCode)
                 .setPhoneNumbers(phoneNumbers)
-                .setTemplateParam("{\"code\":\"" + NumUtil.randomNum(4) + "\"}");
+                .setTemplateParam("{\"code\":\"" + code + "\"}");
         RuntimeOptions runtimeOptions = new RuntimeOptions();
         try {
             client.sendSmsWithOptions(sendSmsRequest, runtimeOptions);
