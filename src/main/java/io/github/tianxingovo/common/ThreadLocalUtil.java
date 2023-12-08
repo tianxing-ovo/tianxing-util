@@ -8,6 +8,7 @@ public class ThreadLocalUtil<T> {
     private final ThreadLocal<T> threadLocal = new ThreadLocal<>();
 
     public void set(T t) {
+        // ThreadLocalMap{key = threadLocal, value = t}
         threadLocal.set(t);
     }
 
