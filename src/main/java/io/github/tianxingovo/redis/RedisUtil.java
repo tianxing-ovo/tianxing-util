@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.time.Duration;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,7 +26,7 @@ public class RedisUtil {
     StringRedisTemplate stringRedisTemplate;
 
     ValueOperations<String, String> stringOperation;
-    HashOperations<String, Object, Object> hashOperation;
+    HashOperations<String, String, Object> hashOperation;
     ListOperations<String, Object> listOperation;
     SetOperations<String, Object> setOperation;
     ZSetOperations<String, Object> zSetOperation;
@@ -54,10 +56,24 @@ public class RedisUtil {
     }
 
     /**
+     * String-expire
+     */
+    public void expire(String key, Duration timeout) {
+        stringRedisTemplate.expire(key, timeout);
+    }
+
+    /**
      * Hash-put
      */
     public void put(String key, String hashKey, String value) {
         hashOperation.put(key, hashKey, value);
+    }
+
+    /**
+     * Hash-putAll
+     */
+    public void putAll(String key, Map<String, Object> map) {
+        hashOperation.putAll(key, map);
     }
 
     /**
