@@ -56,10 +56,10 @@ public class RedisUtil {
     }
 
     /**
-     * String-expire
+     * 设置过期时间
      */
     public void expire(String key, Duration timeout) {
-        stringRedisTemplate.expire(key, timeout);
+        redisTemplate.expire(key, timeout);
     }
 
     /**
