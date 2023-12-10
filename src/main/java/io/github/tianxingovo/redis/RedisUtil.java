@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -15,30 +14,23 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtil {
 
-
-    @Resource
-    RedisTemplate<String, Object> redisTemplate;
-
-    /**
-     * 操作String类型
-     */
     @Resource
     StringRedisTemplate stringRedisTemplate;
 
     ValueOperations<String, String> stringOperation;
-    HashOperations<String, String, Object> hashOperation;
-    ListOperations<String, Object> listOperation;
-    SetOperations<String, Object> setOperation;
-    ZSetOperations<String, Object> zSetOperation;
+    HashOperations<String, String, String> hashOperation;
+    ListOperations<String, String> listOperation;
+    SetOperations<String, String> setOperation;
+    ZSetOperations<String, String> zSetOperation;
 
 
     @PostConstruct
     public void init() {
         stringOperation = stringRedisTemplate.opsForValue();
-        hashOperation = redisTemplate.opsForHash();
-        listOperation = redisTemplate.opsForList();
-        setOperation = redisTemplate.opsForSet();
-        zSetOperation = redisTemplate.opsForZSet();
+        hashOperation = stringRedisTemplate.opsForHash();
+        listOperation = stringRedisTemplate.opsForList();
+        setOperation = stringRedisTemplate.opsForSet();
+        zSetOperation = stringRedisTemplate.opsForZSet();
     }
 
     /**
@@ -47,6 +39,24 @@ public class RedisUtil {
     public void set(String key, String value, long timeout, TimeUnit unit) {
         stringOperation.set(key, value, timeout, unit);
     }
+
+    /**
+     * set key value nx ex timeout
+     * key存在,返回false;key不存在,返回true
+     *
+     * @return 是否成功
+     */
+    public Boolean setIfAbsent(String key, String value, long timeout, TimeUnit unit) {
+        return stringOperation.setIfAbsent(key, value, timeout, unit);
+    }
+
+    /**
+     * String-set
+     */
+    public void set(String key, String value) {
+        stringOperation.set(key, value);
+    }
+
 
     /**
      * String-get
@@ -58,8 +68,8 @@ public class RedisUtil {
     /**
      * 设置过期时间
      */
-    public void expire(String key, Duration timeout) {
-        redisTemplate.expire(key, timeout);
+    public void expire(String key, long timeout, TimeUnit unit) {
+        stringRedisTemplate.expire(key, timeout, unit);
     }
 
     /**
@@ -72,7 +82,7 @@ public class RedisUtil {
     /**
      * Hash-putAll
      */
-    public void putAll(String key, Map<String, Object> map) {
+    public void putAll(String key, Map<String, String> map) {
         hashOperation.putAll(key, map);
     }
 
@@ -81,6 +91,13 @@ public class RedisUtil {
      */
     public Object hashGet(String key, String hashKey) {
         return hashOperation.get(key, hashKey);
+    }
+
+    /**
+     * 获取指定key对应的所有字段和值
+     */
+    public Map<String, String> entries(String key) {
+        return hashOperation.entries(key);
     }
 
     /**
@@ -150,7 +167,7 @@ public class RedisUtil {
      * 删除
      */
     public void delete(String key) {
-        redisTemplate.delete(key);
+        stringRedisTemplate.delete(key);
     }
 }
 

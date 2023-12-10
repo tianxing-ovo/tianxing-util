@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum ErrorCode {
+public enum ErrorCodeEnum {
     UNAUTHORIZED(201, "权限不足"),
     LOGIN_FAILED(202, "登录失败"),
     TOKEN_IS_NULL(203, "token为空"),
