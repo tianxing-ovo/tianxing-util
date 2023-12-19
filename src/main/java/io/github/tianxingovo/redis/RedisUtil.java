@@ -41,7 +41,7 @@ public class RedisUtil {
     }
 
     /**
-     * set key value nx ex timeout
+     * set key value ex|px timeout nx
      * key存在,返回false;key不存在,返回true
      *
      * @return 是否成功
