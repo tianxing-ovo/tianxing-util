@@ -2,12 +2,17 @@ package io.github.tianxingovo.jwt;
 
 import io.github.tianxingovo.list.ListUtil;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.MacAlgorithm;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,31 +23,47 @@ import java.util.Map;
  */
 @Component
 @Data
-@ConfigurationProperties(prefix = "custom")
+@ConfigurationProperties(prefix = "jwt")
 public class JwtUtil {
 
-
-    private String secret = "secret888"; // 密钥
+    // 默认密钥
+    private String secret = "secret888";
+    private SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    private MacAlgorithm macAlgorithm = Jwts.SIG.HS256;
 
     /**
-     * 生成jwtToken
-     * 签名算法.数据.签名
+     * JWT(JSON Web Token): 头部.载荷.签名
+     * Header(头部): 包含了关于JWT元数据的信息,例如签名算法(HS256,RS256)
+     * Payload(载荷): 包含了实际传递的数据,包括用户信息,权限,过期时间
+     * Signature(签名): 验证消息的完整性,保护其不被篡改
      */
     public String createToken(String userInfo, List<String> authList) {
-        Date IssueDate = new Date(); // 发行时间
-        Date expireDate = new Date(IssueDate.getTime() + 1000 * 60 * 60 * 2); // 到期时间
-        //头部
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("alg", "HS256");
-        claims.put("typ", "JWT");
-        return Jwts.builder().addClaims(claims)
-                .setIssuer("admin")  // 设置签发人
-                .setIssuedAt(IssueDate) // 发行时间
-                .setExpiration(expireDate) // 到期时间
-                .claim("userInfo", userInfo) // 用户信息
-                .claim("authList", authList) // 权限列表
-                .signWith(SignatureAlgorithm.HS256, secret) // 使用HS256进行签名,使用secret作为密钥
+        String issuer = "admin"; // 签发人
+        Date issueDate = new Date(); // 发行时间
+        Date expireDate = new Date(issueDate.getTime() + 1000 * 60 * 60 * 2); // 到期时间
+        // 头部
+        Map<String, Object> headMap = new HashMap<>();
+        headMap.put("alg", "HS256");  // 签名算法
+        headMap.put("typ", "JWT");    // 令牌类型
+        // 自定义数据
+        Map<String, Object> claimMap = new HashMap<>();
+        claimMap.put("userInfo", userInfo);  // 用户信息
+        claimMap.put("authList", authList);  // 权限列表
+        return Jwts.builder()
+                .header().add(headMap).and()
+                .issuer(issuer)
+                .issuedAt(issueDate)
+                .expiration(expireDate)
+                .claims(claimMap)
+                .signWith(secretKey, macAlgorithm)
                 .compact();
+    }
+
+    /**
+     * JWS(JSON Web Signature): JSON Web Tokens(JWT)的一种类型,用于对JSON数据进行签名以确保其完整性和防篡改
+     */
+    public Jws<Claims> parseClaim(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
     }
 
     /**
@@ -50,7 +71,7 @@ public class JwtUtil {
      */
     public boolean verifyToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            parseClaim(token);
             return true;
         } catch (Exception e) {
             return false;
@@ -58,33 +79,30 @@ public class JwtUtil {
     }
 
     /**
-     * 从jwtToken中获取用户信息
+     * 解析Header
      */
-    public String getUserInfo(String token) {
-        try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(secret)
-                    .parseClaimsJws(token)
-                    .getBody();
-            return claims.get("userInfo", String.class);
-        } catch (Exception e) {
-            return null;
-        }
+    public JwsHeader parseHeader(String token) {
+        return parseClaim(token).getHeader();
     }
 
     /**
-     * 从jwtToken中获取权限列表
+     * 解析Payload
+     */
+    public Claims parsePayLoad(String token) {
+        return parseClaim(token).getPayload();
+    }
+
+    /**
+     * 获取用户信息
+     */
+    public String getUserInfo(String token) {
+        return parsePayLoad(token).get("userInfo", String.class);
+    }
+
+    /**
+     * 获取用户权限列表
      */
     public List<String> getAuthList(String token) {
-        try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(secret)
-                    .parseClaimsJws(token)
-                    .getBody();
-            Object o = claims.get("authList");
-            return ListUtil.objectToList(o);
-        } catch (Exception e) {
-            return null;
-        }
+        return ListUtil.objectToList(parsePayLoad(token).get("authList"));
     }
 }
