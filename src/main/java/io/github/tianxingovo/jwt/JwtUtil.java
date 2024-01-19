@@ -13,10 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * jwt工具类
@@ -26,10 +23,17 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "jwt")
 public class JwtUtil {
 
-    // 默认密钥
-    private String secret = "secret888";
+    private String secret = "/r3cvNod5rgpBq69NuSX1eseTdx4xiJQYRTJcGKovlE=";
     private SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     private MacAlgorithm macAlgorithm = Jwts.SIG.HS256;
+
+    /**
+     * 生成密钥
+     */
+    public String genSecret() {
+        SecretKey secretKey = Jwts.SIG.HS256.key().build();
+        return Base64.getEncoder().encodeToString(secretKey.getEncoded());
+    }
 
     /**
      * JWT(JSON Web Token): 头部.载荷.签名
