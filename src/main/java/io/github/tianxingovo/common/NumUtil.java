@@ -6,6 +6,7 @@ import java.util.Random;
  * 数字工具类
  */
 public class NumUtil {
+
     /**
      * 获取n位随机整数
      */

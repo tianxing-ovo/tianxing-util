@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -53,11 +54,14 @@ public class FileUtil {
 
     /**
      * NIO读取
+     *
+     * @param path     基础路径: C:/Users/admin/Desktop
+     * @param fileName 文件名: test.csv
      */
-    public static String readNIO(String file) {
+    public static String readNIO(String path, String fileName) {
         StringBuilder sb = new StringBuilder();
         try {
-            List<String> list = Files.readAllLines(Paths.get(file));
+            List<String> list = Files.readAllLines(Paths.get(path, fileName));
             list.forEach(s -> sb.append(s).append("\n"));
         } catch (IOException e) {
             log.error("文件读取失败,失败信息:{}", e.getMessage());
@@ -100,11 +104,15 @@ public class FileUtil {
 
     /**
      * NIO写入
+     *
+     * @param path     基础路径: C:/Users/admin/Desktop
+     * @param fileName 文件名: test.csv
+     * @param s        字符串: hello world
      */
-    public static void writeNIO(String file, String s) {
+    public static void writeNIO(String path, String fileName, String s) {
         try {
-            // APPEND:以追加的方式写入,默认会覆盖
-            Files.write(Paths.get(file), s.getBytes(), StandardOpenOption.APPEND);
+            // APPEND: 以追加的方式写入,默认会覆盖
+            Files.write(Paths.get(path, fileName), s.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
             log.info("写入成功");
         } catch (IOException e) {
             log.error("文件写入失败,失败信息:{}", e.getMessage());
@@ -113,10 +121,14 @@ public class FileUtil {
 
     /**
      * 将文件内容转换为Base64字符串
+     *
+     * @param path     基础路径: C:/Users/admin/Desktop
+     * @param fileName 文件名: test.csv
+     * @return Base64字符串
      */
     @SneakyThrows
-    public static String Base64String(String file) {
-        byte[] bytes = Files.readAllBytes(Paths.get(file));
+    public static String Base64String(String path, String fileName) {
+        byte[] bytes = Files.readAllBytes(Paths.get(path, fileName));
         return Base64.getEncoder().encodeToString(bytes);
     }
 }

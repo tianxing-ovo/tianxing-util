@@ -9,11 +9,15 @@ import java.util.stream.Collectors;
  * 对象工具类
  */
 public class ObjectUtil {
+
     /**
      * 获取对象属性,收集到List中
+     *
+     * @param t         对象
+     * @param fieldList 字段列表
      */
-    public static <T> List<Object> getProperty(Class<T> clazz, T t, List<String> fieldList) {
-        List<Field> list = Arrays.asList(clazz.getDeclaredFields());
+    public static <T> List<String> getProperty(T t, List<String> fieldList) {
+        List<Field> list = Arrays.asList(t.getClass().getDeclaredFields());
         // 获取指定属性
         if (fieldList != null) {
             list = list.stream().filter(field -> fieldList.contains(field.getName())).collect(Collectors.toList());
@@ -21,7 +25,7 @@ public class ObjectUtil {
         return list.stream().map(field -> {
             field.setAccessible(true);
             try {
-                return field.get(t);
+                return String.valueOf(field.get(t));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -32,7 +36,7 @@ public class ObjectUtil {
     /**
      * 获取对象的所有属性,收集到List中
      */
-    public static <T> List<Object> getProperty(Class<T> clazz, T t) {
-        return getProperty(clazz, t, null);
+    public static <T> List<String> getProperty(T t) {
+        return getProperty(t, null);
     }
 }
