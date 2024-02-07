@@ -63,9 +63,8 @@ public class MapUtil {
      * @return 子Map列表
      */
     public static <K, V> List<Map<K, V>> partition(Map<K, V> map, int size) {
-        if (map == null) {
-            throw new NullPointerException("Map must not be null");
-        } else if (size <= 0) {
+        Objects.requireNonNull(map, "Map must not be null");
+        if (size <= 0) {
             throw new IllegalArgumentException("Size must be greater than 0");
         }
         List<Map<K, V>> list = new ArrayList<>();
