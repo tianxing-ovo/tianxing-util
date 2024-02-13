@@ -1,6 +1,6 @@
 package io.github.tianxingovo.jwt;
 
-import io.github.tianxingovo.list.ListUtil;
+import io.github.tianxingovo.common.ObjectUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwsHeader;
@@ -107,6 +107,6 @@ public class JwtUtil {
      * 获取用户权限列表
      */
     public List<String> getAuthList(String token) {
-        return ListUtil.objectToList(parsePayLoad(token).get("authList"));
+        return ObjectUtil.castToList(parsePayLoad(token).get("authList"));
     }
 }

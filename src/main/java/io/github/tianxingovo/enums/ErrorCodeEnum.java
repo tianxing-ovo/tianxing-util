@@ -17,4 +17,13 @@ public enum ErrorCodeEnum {
 
     private final int code;
     private final String message;
+
+    public static String getMessageByCode(int code) {
+        for (ErrorCodeEnum errorCodeEnum : ErrorCodeEnum.values()) {
+            if (errorCodeEnum.code == code) {
+                return errorCodeEnum.getMessage();
+            }
+        }
+        return "";
+    }
 }

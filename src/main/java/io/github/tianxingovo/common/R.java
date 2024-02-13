@@ -18,9 +18,19 @@ import java.util.Map;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class R {
-    private Integer code; //状态码
-    private String msg; //消息
-    private Map<String, Object> data; //存放数据
+
+    /**
+     * 状态码
+     */
+    private Integer code;
+    /**
+     * 消息
+     */
+    private String msg;
+    /**
+     * 存放数据
+     */
+    private Map<String, Object> data;
 
     public R(String msg) {
         this.msg = msg;

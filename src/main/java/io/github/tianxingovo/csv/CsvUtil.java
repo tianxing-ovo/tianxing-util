@@ -1,12 +1,14 @@
 package io.github.tianxingovo.csv;
 
-import io.github.tianxingovo.common.ObjectUtil;
+import io.github.tianxingovo.constant.Constant;
 import lombok.SneakyThrows;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -16,17 +18,39 @@ public class CsvUtil {
 
     public static final StringBuilder sb = new StringBuilder();
 
-    public static void write(List<?> list, List<String> filedList) {
-        for (Object obj : list) {
-            sb.append(ObjectUtil.getProperty(obj, filedList).stream().map(CsvUtil::format).collect(Collectors.joining(","))).append("\n");
+
+    /**
+     * 部分字段写入表体
+     *
+     * @param list          数据List
+     * @param filedNameList 字段名称列表
+     */
+    public static void write(List<Map<String, Object>> list, List<String> filedNameList) {
+        for (Map<String, Object> map : list) {
+            sb.append(filedNameList.stream().map(filedName -> format(map.get(filedName))).collect(Collectors.joining(Constant.COMMA))).append(Constant.LINE_BREAK);
+        }
+    }
+
+
+    /**
+     * 全部字段写入表体
+     *
+     * @param list 数据List
+     */
+    public static void write(List<Map<String, Object>> list) {
+        for (Map<String, Object> map : list) {
+            sb.append(map.values().stream().map(CsvUtil::format).collect(Collectors.joining(Constant.COMMA)))
+                    .append(Constant.LINE_BREAK);
         }
     }
 
     /**
+     * 写入表头
+     *
      * @param filedList 字段名称列表
      */
     public static void writeHead(List<String> filedList) {
-        sb.append(String.join(",", filedList)).append("\n");
+        sb.append(String.join(Constant.COMMA, filedList)).append(Constant.LINE_BREAK);
     }
 
     /**
@@ -43,10 +67,10 @@ public class CsvUtil {
     /**
      * 处理特殊情况
      */
-    private static String format(String str) {
-        if (str == null || str.equals("null")) {
-            return "--";
+    private static String format(Object obj) {
+        if (Objects.isNull(obj)) {
+            return Constant.DOUBLE_DASH;
         }
-        return str;
+        return String.valueOf(obj);
     }
 }

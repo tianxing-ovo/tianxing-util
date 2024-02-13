@@ -1,7 +1,9 @@
 package io.github.tianxingovo.list;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /**
  * List工具类
@@ -9,15 +11,25 @@ import java.util.stream.Collectors;
 public class ListUtil {
 
     /**
-     * Object -> List
+     * 将一个List按照固定大小拆分成多个子List
+     *
+     * @param list 列表
+     * @param size 子List的大小
      */
-    public static List<String> objectToList(Object o) {
-        if (o instanceof List) {
-            List<?> rawList = (List<?>) o;
-            List<String> list;
-            list = rawList.stream().map(item -> (String) item).collect(Collectors.toList());
-            return list;
+    public static <T> List<List<T>> partition(List<T> list, int size) {
+        Objects.requireNonNull(list, "List must not be null");
+        if (size <= 0) {
+            throw new IllegalArgumentException("Size must be greater than 0");
         }
-        return null;
+        List<List<T>> lists = new ArrayList<>();
+        Iterator<T> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            List<T> subList = new ArrayList<>(size);
+            for (int i = 0; i < size && iterator.hasNext(); i++) {
+                subList.add(iterator.next());
+            }
+            lists.add(subList);
+        }
+        return lists;
     }
 }
