@@ -23,11 +23,11 @@ public class CsvUtil {
      * 部分字段写入表体
      *
      * @param list          数据List
-     * @param filedNameList 字段名称列表
+     * @param fieldNameList 字段名称列表
      */
-    public static void write(List<Map<String, Object>> list, List<String> filedNameList) {
+    public static void write(List<Map<String, Object>> list, List<String> fieldNameList) {
         for (Map<String, Object> map : list) {
-            sb.append(filedNameList.stream().map(filedName -> format(map.get(filedName))).collect(Collectors.joining(Constant.COMMA))).append(Constant.LINE_BREAK);
+            sb.append(fieldNameList.stream().map(fieldName -> format(map.get(fieldName))).collect(Collectors.joining(Constant.COMMA))).append(Constant.LINE_BREAK);
         }
     }
 
