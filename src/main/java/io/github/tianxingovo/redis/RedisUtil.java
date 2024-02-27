@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -15,13 +16,13 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtil {
 
     @Resource
-    StringRedisTemplate stringRedisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
 
-    ValueOperations<String, String> stringOperation;
-    HashOperations<String, String, String> hashOperation;
-    ListOperations<String, String> listOperation;
-    SetOperations<String, String> setOperation;
-    ZSetOperations<String, String> zSetOperation;
+    private ValueOperations<String, String> stringOperation;
+    private HashOperations<String, String, String> hashOperation;
+    private ListOperations<String, String> listOperation;
+    private SetOperations<String, String> setOperation;
+    private ZSetOperations<String, String> zSetOperation;
 
 
     @PostConstruct
@@ -95,6 +96,8 @@ public class RedisUtil {
 
     /**
      * 获取指定key对应的所有字段和值
+     *
+     * @param key key
      */
     public Map<String, String> entries(String key) {
         return hashOperation.entries(key);
@@ -108,6 +111,13 @@ public class RedisUtil {
     }
 
     /**
+     * List-leftPushAll
+     */
+    public void leftPushAll(String key, String... value) {
+        listOperation.leftPushAll(key, value);
+    }
+
+    /**
      * List-rightPush
      */
     public void rightPush(String key, String value) {
@@ -115,17 +125,46 @@ public class RedisUtil {
     }
 
     /**
+     * List-rightPushAll
+     */
+    public void rightPush(String key, String... value) {
+        listOperation.rightPushAll(key, value);
+    }
+
+    /**
      * List-leftPop
      */
-    public Object leftPop(String key) {
+    public String leftPop(String key) {
         return listOperation.leftPop(key);
     }
 
     /**
      * List-rightPop
      */
-    public Object rightPop(String key) {
+    public String rightPop(String key) {
         return listOperation.rightPop(key);
+    }
+
+    /**
+     * List-range
+     * 取出所有元素
+     *
+     * @param key key
+     */
+    public List<String> range(String key) {
+        // 0表示第一个元素,-1表示最后一个元素
+        return listOperation.range(key, 0, -1);
+    }
+
+    /**
+     * List-trim
+     * 删除所有元素
+     *
+     * @param key key
+     */
+    public void trim(String key) {
+        // 0表示第一个元素,-1表示最后一个元素
+        listOperation.trim(key, 0, -1);
     }
 
     /**
