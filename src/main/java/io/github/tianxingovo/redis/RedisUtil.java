@@ -133,16 +133,46 @@ public class RedisUtil {
 
     /**
      * List-leftPop
+     * List为空,直接返回null
+     *
+     * @param key key
      */
     public String leftPop(String key) {
         return listOperation.leftPop(key);
     }
 
     /**
+     * List-BlockingLeftPop
+     * List为空,阻塞等待
+     *
+     * @param key     key
+     * @param timeout 超时时间
+     * @param unit    时间单位
+     */
+    public String BlockingLeftPop(String key, long timeout, TimeUnit unit) {
+        return listOperation.leftPop(key, timeout, unit);
+    }
+
+    /**
      * List-rightPop
+     * List为空,直接返回null
+     *
+     * @param key key
      */
     public String rightPop(String key) {
         return listOperation.rightPop(key);
+    }
+
+    /**
+     * List-BlockingRightPop
+     * List为空,阻塞等待
+     *
+     * @param key     key
+     * @param timeout 超时时间
+     * @param unit    时间单位
+     */
+    public String BlockingRightPop(String key, long timeout, TimeUnit unit) {
+        return listOperation.rightPop(key, timeout, unit);
     }
 
     /**
