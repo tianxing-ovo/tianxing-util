@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Indexed;
 
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
@@ -12,10 +13,11 @@ import java.util.concurrent.TimeUnit;
  * Redisson工具类
  */
 @Component
+@Indexed
 public class RedissonUtil {
 
     @Resource
-    RedissonClient redissonClient;
+    private RedissonClient redissonClient;
 
     /**
      * 获取分布式锁
