@@ -187,8 +187,7 @@ public class RedisUtil {
     }
 
     /**
-     * List-trim
-     * 删除所有元素
+     * List-trim(删除所有元素)
      *
      * @param key key
      */
@@ -198,17 +197,45 @@ public class RedisUtil {
     }
 
     /**
-     * Set-add
+     * Set-add(添加元素)
+     *
+     * @param key    键
+     * @param values 值数组
      */
-    public void setAdd(String key, String value) {
-        setOperation.add(key, value);
+    public void setAdd(String key, String... values) {
+        setOperation.add(key, values);
     }
 
     /**
-     * Set-pop
+     * Set-pop(移除并返回一个随机元素)
+     *
+     * @param key 键
+     * @return 随机元素值
      */
     public Object setPop(String key) {
+        // 如果Set为空,则返回null
         return setOperation.pop(key);
+    }
+
+    /**
+     * Set-remove(移除指定key的一个或多个元素)
+     *
+     * @param key    键
+     * @param values 值数组
+     */
+    public void remove(String key, Object... values) {
+        setOperation.remove(key, values);
+    }
+
+    /**
+     * Set-member(检查指定key的set中是否存在指定成员)
+     *
+     * @param key    键
+     * @param member 成员
+     * @return 是否存在
+     */
+    public Boolean isMember(String key, String member) {
+        return setOperation.isMember(key, member);
     }
 
     /**
@@ -233,7 +260,9 @@ public class RedisUtil {
     }
 
     /**
-     * 删除
+     * 删除指定的key
+     *
+     * @param key 键
      */
     public void delete(String key) {
         stringRedisTemplate.delete(key);
