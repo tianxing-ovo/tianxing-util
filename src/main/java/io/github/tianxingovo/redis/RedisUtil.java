@@ -35,42 +35,49 @@ public class RedisUtil {
     }
 
     /**
-     * String-set
+     * String-set(设置键值对)
+     *
+     * @param key     键
+     * @param value   值
+     * @param timeout 过期时间
+     * @param unit    时间单位
      */
     public void set(String key, String value, long timeout, TimeUnit unit) {
         stringOperation.set(key, value, timeout, unit);
     }
 
     /**
-     * set key value [timeout EX seconds|PX milliseconds] NX
-     * key存在,返回false;key不存在,返回true
+     * String-set(如果key不存在则设置键值对)
      *
-     * @return 是否成功
+     * @param key     键
+     * @param value   值
+     * @param timeout 过期时间
+     * @param unit    时间单位
+     * @return key存在返回false, key不存在返回true
      */
     public Boolean setIfAbsent(String key, String value, long timeout, TimeUnit unit) {
+        // set key value [timeout EX seconds|PX milliseconds] NX
         return stringOperation.setIfAbsent(key, value, timeout, unit);
     }
 
     /**
-     * String-set
+     * String-set(设置键值对,无过期时间)
+     *
+     * @param key   键
+     * @param value 值
      */
     public void set(String key, String value) {
         stringOperation.set(key, value);
     }
 
-
     /**
-     * String-get
+     * String-get(获取指定key的值)
+     *
+     * @param key 键
+     * @return 值
      */
     public String get(String key) {
         return stringOperation.get(key);
-    }
-
-    /**
-     * 设置过期时间
-     */
-    public void expire(String key, long timeout, TimeUnit unit) {
-        stringRedisTemplate.expire(key, timeout, unit);
     }
 
     /**
@@ -232,7 +239,7 @@ public class RedisUtil {
      *
      * @param key    键
      * @param member 成员
-     * @return 是否存在
+     * @return 存在返回true, 不存在返回false
      */
     public Boolean isMember(String key, String member) {
         return setOperation.isMember(key, member);
@@ -266,6 +273,27 @@ public class RedisUtil {
      */
     public void delete(String key) {
         stringRedisTemplate.delete(key);
+    }
+
+    /**
+     * 设置过期时间
+     *
+     * @param key     键
+     * @param timeout 过期时间
+     * @param unit    时间单位
+     */
+    public void expire(String key, long timeout, TimeUnit unit) {
+        stringRedisTemplate.expire(key, timeout, unit);
+    }
+
+    /**
+     * 检查是否存在指定的key
+     *
+     * @param key 键
+     * @return 存在返回true, 不存在返回false
+     */
+    public Boolean hasKey(String key) {
+        return stringRedisTemplate.hasKey(key);
     }
 }
 
