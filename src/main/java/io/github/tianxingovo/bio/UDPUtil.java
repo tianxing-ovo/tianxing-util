@@ -17,7 +17,7 @@ public class UDPUtil {
         DatagramPacket packet = new DatagramPacket(bytes, bytes.length);
         // 阻塞,直到接收到数据报
         socket.receive(packet);
-        log.info(message + ":{}", new String(bytes, 0, packet.getLength()));
+        log.info("{}:{}", message, new String(bytes, 0, packet.getLength()));
         return packet;
     }
 

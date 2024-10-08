@@ -20,7 +20,7 @@ public class TCPUtil {
         byte[] bytes = new byte[1024];
         // 阻塞,直到I/O流通道中有数据
         int len = is.read(bytes);
-        log.info(message + ":{}", new String(bytes, 0, len));
+        log.info("{}:{}", message, new String(bytes, 0, len));
     }
 
     /**
